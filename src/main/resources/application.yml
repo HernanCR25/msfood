@@ -1,0 +1,36 @@
+server:
+  port: ${PORT:8090}
+
+spring:
+  application:
+    name: FoodCost
+
+  r2dbc:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASS}
+    pool:
+      enabled: true
+      initial-size: 2
+      max-size: 10
+      max-idle-time: 30s
+      validation-query: SELECT 1
+      acquire-retry: 3
+      acquire-retry-delay: 5s
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${JWT_ISSUER_URI}
+          jwk-set-uri: ${JWT_JWK_SET_URI}
+
+api:
+  food-service-url: ${FOOD_SERVICE_URL}
+  hens-service-url: ${HENS_SERVICE_URL}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.r2dbc: DEBUG
+    io.r2dbc: DEBUG

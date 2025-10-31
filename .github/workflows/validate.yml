@@ -1,0 +1,50 @@
+name: Validate Backend Security
+
+on:
+  push:
+    branches:
+      - deve
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🔧 Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 🛑 Run SpotBugs (Detecta errores críticos)
+        run: |
+          mvn com.github.spotbugs:spotbugs-maven-plugin:check || exit 1
+
+      - name: 📂 Upload SpotBugs Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: spotbugs-report
+          path: target/spotbugs.xml
+
+      - name: 🔍 Security Scan (OWASP Dependency Check)
+        run: |
+          mvn org.owasp:dependency-check-maven:check || exit 1
+
+      - name: 📂 Upload OWASP Dependency Check Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-report
+          path: target/dependency-check-report.html
+
+      - name: 🚀 Run PMD Analysis (Detecta malas prácticas)
+        run: |
+          mvn pmd:pmd || exit 1
+
+      - name: 📂 Upload PMD Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: pmd-report
+          path: target/pmd.xml

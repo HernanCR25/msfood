@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 public interface FoodRepository extends ReactiveCrudRepository<Food, Long> {
     Flux<Food> findAllByStatus(String status);
 
-    @Query("SELECT * FROM Foods WHERE LOWER(food_type) LIKE LOWER(CONCAT('%', :foodType, '%')) AND status = 'A'")
+    @Query("SELECT * FROM foods WHERE LOWER(food_type) LIKE LOWER(CONCAT('%', :foodType, '%')) AND status = 'A'")
     Flux<Food> findByFoodTypeContaining(@Param("foodType") String foodType);
 
 

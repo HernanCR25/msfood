@@ -7,7 +7,7 @@ RUN mvn clean package -DskipTests
 # Etapa 2: Crear la imagen final ligera
 FROM amazoncorretto:17-alpine-jdk
 WORKDIR /app
-COPY --from=build /app/target/FoodCost-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/target/foods-0.0.1-SNAPSHOT.jar app.jar
 
 # Render expone automáticamente el puerto 8080, asegúrate de usarlo
 EXPOSE 8090

@@ -1,4 +1,4 @@
-package pe.edu.vallegrande.foodcost.config;
+package pe.edu.vallegrande.foods.config;
 
 import lombok.Getter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;

@@ -1,6 +1,5 @@
-package pe.edu.vallegrande.foodcost.exception.service;
+package pe.edu.vallegrande.foods.exception;
 
-// Excepción cuando el alimento no es encontrado
 public class FoodNotFoundException extends RuntimeException {
     public FoodNotFoundException(String message) {
         super(message);

@@ -1,6 +1,5 @@
-package pe.edu.vallegrande.foodcost.config;
+package pe.edu.vallegrande.foods.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,7 +12,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.reactive.CorsConfigurationSource;
 import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import org.springframework.web.server.ServerWebExchange;
@@ -23,6 +21,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -47,10 +48,10 @@ public class SecurityConfig {
                 .authorizeExchange(auth -> auth
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers("/swagger-ui.html", "/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/food-costs/**").hasAnyRole("USER", "ADMIN")
-                        .pathMatchers(HttpMethod.POST, "/api/food-costs/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.PUT, "/api/food-costs/**").hasRole("ADMIN")
-                        .pathMatchers(HttpMethod.DELETE, "/api/food-costs/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.GET, "/api/foods/**").hasAnyRole("USER", "ADMIN")
+                        .pathMatchers(HttpMethod.POST, "/api/foods/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.PUT, "/api/foods/**").hasRole("ADMIN")
+                        .pathMatchers(HttpMethod.DELETE, "/api/foods/**").hasRole("ADMIN")
                         .anyExchange().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -59,7 +60,9 @@ public class SecurityConfig {
                                 .jwtAuthenticationConverter(this::convertJwt)
                         )
                 )
-                .cors(cors -> cors.configurationSource(dynamicCorsConfigurationSource()))
+                .cors(cors -> cors
+                        .configurationSource(dynamicCorsConfigurationSource())
+                )
                 .build();
     }
 
@@ -77,7 +80,7 @@ public class SecurityConfig {
     }
 
     /**
-     * 🔄 Configuración dinámica de CORS para admitir localhost y Gitpod
+     * 🔄 Configuración dinámica de CORS para admitir localhost y Gitpod.
      */
     private CorsConfigurationSource dynamicCorsConfigurationSource() {
         return new UrlBasedCorsConfigurationSource() {
@@ -93,7 +96,7 @@ public class SecurityConfig {
                     config.setMaxAge(3600L);
                     return config;
                 }
-                return null; // Origen no permitido
+                return null; // CORS bloqueado si el origen no es válido
             }
         };
     }

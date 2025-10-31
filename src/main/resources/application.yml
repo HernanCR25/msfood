@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: FoodCost
+    name: foods
 
   r2dbc:
     url: ${DB_URL}
@@ -25,12 +25,12 @@ spring:
           issuer-uri: ${JWT_ISSUER_URI}
           jwk-set-uri: ${JWT_JWK_SET_URI}
 
-api:
-  food-service-url: ${FOOD_SERVICE_URL}
-  hens-service-url: ${HENS_SERVICE_URL}
-
 logging:
   level:
     root: INFO
     org.springframework.r2dbc: DEBUG
     io.r2dbc: DEBUG
+
+
+
+    
